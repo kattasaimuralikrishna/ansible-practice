@@ -23,9 +23,9 @@
       yum: 
         name: httpd
         state: present
-      when: ansible_facts['distribution'] == "CentOS"
       notify: 
         - Restart httpd
+      when: ansible_facts['distribution'] == "CentOS"
     - name: install my sql
       yum:
         name:
@@ -33,10 +33,7 @@
         - php-mysql
         - php-fpm
         state: present
-        when: ansible_facts['distribution'] == "CentOS"
-      notify: 
-        - Restart httpd  
-      when: ansible_facts['distribution'] == "RedHat"
+      when: ansible_facts['distribution'] == "CentOS"
     - name: copy the content
       copy:
         content: |
