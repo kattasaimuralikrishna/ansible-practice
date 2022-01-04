@@ -1,29 +1,47 @@
 ---
 - name: install lamp server
-  hosts: all
+  hosts: 
+    - webserver
+    - dbserver
   become: yes
   tasks: 
     - name: install apache2
-        apt:
-          name: apache2
-          state: present
-          update_cache : yes
+      apt:
+        name: apache2
+        state: present
+        update_cache : yes
+        when: ansible_facts['distribution'] == Debian
     - name: install php and mysql
-        apt:
-          name:
-          - php
-          - libapache2-mod-php
-          - php-mysql
-          state: present
-     - name: copy the content
-         copy:
-           content: |
-              <?php infophp?>;
-           dest: /var/www/html/info.php
-       notify:
+      apt:
+        name:
+        - php
+        - libapache2-mod-php
+        - php-mysql
+        state: present
+        when: ansible_facts['distribution'] == Debian
+    - name: install httpd
+      yum: 
+        name: httpd
+        state: present
+        when: ansible_facts['distribution'] == RedHat
+    - name: install my sql
+      yum:
+        name:
+        - php
+        - php-mysql
+        - php-fpm
+        state: present
+        when: ansible_facts['distribution'] == RedHat
+    - name: copy the content
+      copy:
+        content: |
+              <?php phpinfo()?>;
+        dest: /var/www/html/info.php
+      notify:
        - Restart apache2   
-   handlers :
-     - name: restart apache2
-         name: apache2
-         state: restarted
+  handlers :
+    - name: Restart apache2
+      ansible.builtin.service:
+        name: apache2
+        state: restarted
                                        
