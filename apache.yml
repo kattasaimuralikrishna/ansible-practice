@@ -10,7 +10,7 @@
         name: apache2
         state: present
         update_cache : yes
-      when: ansible_facts['distribution'] == Debian
+      when: ansible_facts['distribution'] == "Ubuntu"
     - name: install php and mysql
       apt:
         name:
@@ -18,12 +18,12 @@
         - libapache2-mod-php
         - php-mysql
         state: present
-      when: ansible_facts['distribution'] == Debian
+      when: ansible_facts['distribution'] == "Ubuntu"
     - name: install httpd
       yum: 
         name: httpd
         state: present
-      when: ansible_facts['distribution'] == RedHat
+      when: ansible_facts['distribution'] == "CentOS"
       notify: 
         - Restart httpd
     - name: install my sql
@@ -33,9 +33,10 @@
         - php-mysql
         - php-fpm
         state: present
+        when: ansible_facts['distribution'] == "CentOS"
       notify: 
         - Restart httpd  
-      when: ansible_facts['distribution'] == RedHat
+      when: ansible_facts['distribution'] == "RedHat"
     - name: copy the content
       copy:
         content: |
