@@ -49,8 +49,7 @@
     - name: Restart apache2
       ansible.builtin.service:
         name: apache2
-        state: restarted
-  handlers: 
+        state: restarted 
     - name: Restart httpd
       ansible.builtin.service:
         name: httpd
