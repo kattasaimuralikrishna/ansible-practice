@@ -10,7 +10,7 @@
         name: apache2
         state: present
         update_cache : yes
-        when: ansible_facts['distribution'] == Debian
+      when: ansible_facts['distribution'] == Debian
     - name: install php and mysql
       apt:
         name:
@@ -18,12 +18,14 @@
         - libapache2-mod-php
         - php-mysql
         state: present
-        when: ansible_facts['distribution'] == Debian
+      when: ansible_facts['distribution'] == Debian
     - name: install httpd
       yum: 
         name: httpd
         state: present
-        when: ansible_facts['distribution'] == RedHat
+      when: ansible_facts['distribution'] == RedHat
+      notify: 
+        - Restart httpd
     - name: install my sql
       yum:
         name:
@@ -31,7 +33,9 @@
         - php-mysql
         - php-fpm
         state: present
-        when: ansible_facts['distribution'] == RedHat
+      notify: 
+        - Restart httpd  
+      when: ansible_facts['distribution'] == RedHat
     - name: copy the content
       copy:
         content: |
@@ -39,9 +43,14 @@
         dest: /var/www/html/info.php
       notify:
        - Restart apache2   
-  handlers :
+  handlers:
     - name: Restart apache2
       ansible.builtin.service:
         name: apache2
         state: restarted
+  handlers: 
+    - name: Restart httpd
+      ansible.builtin.service:
+        name: httpd
+        state: restarted     
                                        
