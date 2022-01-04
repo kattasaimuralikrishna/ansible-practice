@@ -43,7 +43,8 @@
               <?php phpinfo()?>;
         dest: /var/www/html/info.php
       notify:
-       - Restart apache2   
+       - Restart apache2 
+       - Restart httpd  
   handlers:
     - name: Restart apache2
       ansible.builtin.service:
