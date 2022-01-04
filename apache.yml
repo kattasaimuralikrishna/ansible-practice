@@ -1,0 +1,29 @@
+---
+- name: install lamp server
+  hosts: all
+  become: yes
+  tasks: 
+    - name: install apache2
+        apt:
+          name: apache2
+          state: present
+          update_cache : yes
+    - name: install php and mysql
+        apt:
+          name:
+          - php
+          - libapache2-mod-php
+          - php-mysql
+          state: present
+     - name: copy the content
+         copy:
+           content: |
+              <?php infophp?>;
+           dest: /var/www/html/info.php
+       notify:
+       - Restart apache2   
+   handlers :
+     - name: restart apache2
+         name: apache2
+         state: restarted
+                                       
