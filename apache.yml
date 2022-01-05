@@ -7,7 +7,7 @@
   tasks: 
     - name: install apache2
       apt:
-        name: apache2
+        name: {{ package }}
         state: present
         update_cache : yes
       when: ansible_facts['os_family'] == "Debian" 
@@ -21,7 +21,7 @@
       when: ansible_facts['os_family'] == "Debian"
     - name: install httpd
       yum: 
-        name: httpd
+        name: {{ package }}
         state: present
       when: ansible_facts['os_family'] == "RedHat"
     - name: install my sql
@@ -32,26 +32,18 @@
         - php-fpm
         state: present
       notify: 
-        - Restart Httpd
+        - Restart apache
       when: ansible_facts['os_family'] == "RedHat"
     - name: copy the content
       copy:
         content: |
               <?php phpinfo()?>;
-        dest: /var/www/html/info.php
+        dest: {{ info_location }}
       notify:
-       - Restart Apache2 
-       - Restart Httpd  
+       - Restart Apache  
   handlers:
-    - name: Restart Apache2
+    - name: Restart Apache
       service:
-        name: apache2
+        name: {{ package }}
         enabled: yes
-        state: restarted 
-      when: ansible_facts['os_family'] == "Debian"
-    - name: Restart Httpd
-      ansible.builtin.service:
-        name: httpd
-        enabled: yes
-        state: restarted     
-      when: ansible_facts['os_family'] == "RedHat"                                 
+        state: restarted                              
