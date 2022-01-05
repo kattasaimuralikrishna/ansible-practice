@@ -11,7 +11,7 @@
         state: present
     - name: install php and mysql
       package:
-        name: "{{ php_packge }}"
+        name: "{{ php_packges }}"
         state: present
     - name: copy the content
       copy:
