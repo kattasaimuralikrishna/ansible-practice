@@ -11,7 +11,6 @@
         state: present
         update_cache : yes
       when: ansible_facts['os_family'] == "Debian" 
-      when: ansible_facts['distribution_major_version'] == "20"
     - name: install php and mysql
       apt:
         name:
@@ -20,13 +19,11 @@
         - php-mysql
         state: present
       when: ansible_facts['os_family'] == "Debian"
-      when: ansible_facts['distribution_major_version'] == "20"
     - name: install httpd
       yum: 
         name: httpd
         state: present
       when: ansible_facts['os_family'] == "RedHat"
-      when: ansible_facts['distribution_major_version'] == "7"
     - name: install my sql
       yum:
         name:
@@ -35,29 +32,26 @@
         - php-fpm
         state: present
       notify: 
-        - Restart httpd
+        - Restart Httpd
       when: ansible_facts['os_family'] == "RedHat"
-      when: ansible_facts['distribution_major_version'] == "7"
     - name: copy the content
       copy:
         content: |
               <?php phpinfo()?>;
         dest: /var/www/html/info.php
       notify:
-       - Restart apache2 
-       - Restart httpd  
+       - Restart Apache2 
+       - Restart Httpd  
   handlers:
-    - name: Restart apache2
-      ansible.builtin.service:
+    - name: Restart Apache2
+      service:
         name: apache2
         enabled: yes
         state: restarted 
-      when: ansible_facts['os_family'] == "Debian" 
-      when: ansible_facts['distribution_major_version'] == "20" 
-    - name: Restart httpd
+      when: ansible_facts['os_family'] == "Debian"
+    - name: Restart Httpd
       ansible.builtin.service:
         name: httpd
         enabled: yes
         state: restarted     
-      when: ansible_facts['os_family'] == "RedHat"
-      when: ansible_facts['distribution_major_version'] == "7"                                  
+      when: ansible_facts['os_family'] == "RedHat"                                 
