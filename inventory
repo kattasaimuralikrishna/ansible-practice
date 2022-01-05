@@ -1,6 +1,9 @@
 [webserver]
-localhost
-172.31.32.12
+localhost 
+172.31.32.12 package=apache2
+
+[webserver:vars]
+info_location=/var/www/html/info.php
 
 [dbserver]
-172.31.30.221
+172.31.30.221 package=httpd

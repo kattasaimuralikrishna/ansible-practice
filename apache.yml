@@ -7,7 +7,7 @@
   tasks: 
     - name: install apache2
       apt:
-        name: {{ package }}
+        name: "{{ package }}"
         state: present
         update_cache : yes
       when: ansible_facts['os_family'] == "Debian" 
@@ -21,7 +21,7 @@
       when: ansible_facts['os_family'] == "Debian"
     - name: install httpd
       yum: 
-        name: {{ package }}
+        name: "{{ package }}"
         state: present
       when: ansible_facts['os_family'] == "RedHat"
     - name: install my sql
@@ -38,12 +38,12 @@
       copy:
         content: |
               <?php phpinfo()?>;
-        dest: {{ info_location }}
+        dest: "{{ info_location }}"
       notify:
        - Restart Apache  
   handlers:
     - name: Restart Apache
       service:
-        name: {{ package }}
+        name: "{{ package }}"
         enabled: yes
         state: restarted                              
