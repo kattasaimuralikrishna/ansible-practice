@@ -5,35 +5,14 @@
     - dbserver
   become: yes
   tasks: 
-    - name: install apache2
-      apt:
+    - name: install apache
+      package:
         name: "{{ package }}"
         state: present
-        update_cache : yes
-      when: ansible_facts['os_family'] == "Debian" 
     - name: install php and mysql
-      apt:
-        name:
-        - php
-        - libapache2-mod-php
-        - php-mysql
+      package:
+        name: "{{ php_packge }}"
         state: present
-      when: ansible_facts['os_family'] == "Debian"
-    - name: install httpd
-      yum: 
-        name: "{{ package }}"
-        state: present
-      when: ansible_facts['os_family'] == "RedHat"
-    - name: install my sql
-      yum:
-        name:
-        - php
-        - php-mysql
-        - php-fpm
-        state: present
-      notify: 
-        - Restart apache
-      when: ansible_facts['os_family'] == "RedHat"
     - name: copy the content
       copy:
         content: |
