@@ -46,9 +46,12 @@
     - name: Restart apache2
       ansible.builtin.service:
         name: apache2
+        enabled: yes
         state: restarted 
+      when: ansible_facts['distribution'] == "Ubuntu"  
     - name: Restart httpd
       ansible.builtin.service:
         name: httpd
+        enabled: yes
         state: restarted     
-                                       
+      when: ansible_facts['distribution'] == "CentOS"                                  
