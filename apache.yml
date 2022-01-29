@@ -2,16 +2,16 @@
 - name: install lamp server
   hosts: 
     - webserver
-    - dbserver
+    - dbserver 
   become: yes
   tasks: 
     - name: install apache
       package:
         name: "{{ package }}"
         state: present
-    - name: install php and mysql
+    - name: install php modules
       package:
-        name: "{{ php_packges }}"
+        name: "{{ php_packages }}"
         state: present
     - name: copy the content
       copy:
@@ -25,4 +25,7 @@
       service:
         name: "{{ package }}"
         enabled: yes
-        state: restarted                              
+        state: restarted  
+    - name: install lamp
+    
+                              
