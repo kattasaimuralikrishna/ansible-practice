@@ -26,8 +26,6 @@
         name: "{{ package }}"
         enabled: yes
         state: restarted  
-    - name: install lamp
-         package: 
-            name: java
+    
     
                               
