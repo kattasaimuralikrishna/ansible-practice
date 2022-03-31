@@ -1,5 +1,5 @@
 [webserver]
-localhost package=apache2 php_packages='["php", "libapache2-mod-php", "php-mysql" ]'
+
 172.31.34.146 package=apache2  php_packages='[ "php" , "libapache2-mod-php" , "php-mysql" ]'
 
 [webserver:vars]
